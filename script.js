@@ -1,15 +1,8 @@
-// Karusell fotografi – interactions
 (() => {
   const header = document.querySelector('.site-header');
-  const toTop = document.querySelector('.to-top');
   const toggle = document.querySelector('.menu-toggle');
 
-  // Header background + back-to-top on scroll
-  const onScroll = () => {
-    const y = window.scrollY;
-    header.classList.toggle('scrolled', y > 40);
-    toTop.classList.toggle('show', y > 700);
-  };
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -23,18 +16,7 @@
   toggle.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
   document.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
-  // Reveal on scroll
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.style.transitionDelay = `${(i % 4) * 80}ms`;
-    io.observe(el);
-  });
-
-  // Hero video: respect reduced motion
+  // Respect reduced motion for the hero video
   const video = document.querySelector('.hero-video');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     video.removeAttribute('autoplay');
@@ -64,6 +46,4 @@
     if (e.key === 'ArrowLeft') show(idx - 1);
     if (e.key === 'ArrowRight') show(idx + 1);
   });
-
-  document.getElementById('year').textContent = new Date().getFullYear();
 })();
